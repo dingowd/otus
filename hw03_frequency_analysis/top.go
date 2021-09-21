@@ -10,7 +10,7 @@ type wStruct struct {
 	word string
 }
 
-//func for structure sorting
+// func for structure sorting.
 func sortSlice(slice []wStruct) []wStruct {
 	sort.SliceStable(slice, func(i, j int) bool {
 		if slice[i].num != slice[j].num {
@@ -22,37 +22,39 @@ func sortSlice(slice []wStruct) []wStruct {
 }
 
 func Top10(inStr string) []string {
-	//return empty slice if string is empty
+	// return empty slice if string is empty
 	if inStr == "" {
 		return nil
 	}
-	//get work slice
+	// get work slice
 	workSlice := strings.Fields(inStr)
-	//init and fill work map
+	// init and fill work map
 	wMap := make(map[string]int)
 	for i := range workSlice {
 		wMap[workSlice[i]]++
 	}
-	//init and fill structure to sort
+	// init and fill structure to sort
 	words := make([]wStruct, len(wMap))
+	i := 0
 	for key, val := range wMap {
 		wE := wStruct{}
 		wE.word = key
 		wE.num = val
-		words = append(words, wE)
+		words[i] = wE
+		i++
 	}
-	//sort structure
+	// sort structure
 	words = sortSlice(words)
 	n := 10
 	if len(words) < 10 {
 		n = len(words)
 	}
-	//cut sorted structure
-	words = words[:n]
-	//get slice to return
+	// cut sorted structure
+	sorted := words[:n]
+	// get slice to return
 	outSlice := []string{}
-	for i := range words {
-		outSlice = append(outSlice, words[i].word)
+	for i := range sorted {
+		outSlice = append(outSlice, sorted[i].word)
 	}
 	return outSlice
 }

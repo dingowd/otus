@@ -8,7 +8,7 @@ import (
 
 func TestList(t *testing.T) {
 	t.Run("empty list", func(t *testing.T) {
-		l := NewList()
+		l := newList()
 
 		require.Equal(t, 0, l.Len())
 		require.Nil(t, l.Front())
@@ -16,7 +16,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("complex", func(t *testing.T) {
-		l := NewList()
+		l := newList()
 
 		l.PushFront(10) // [10]
 		l.PushBack(20)  // [10, 20]
@@ -50,7 +50,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("my own test", func(t *testing.T) {
-		l := NewList()
+		l := newList()
 
 		l.PushFront(1)
 		l.PushBack(2)

@@ -8,7 +8,7 @@ import (
 
 func TestList(t *testing.T) {
 	t.Run("empty list", func(t *testing.T) {
-		l := NewList()
+		l := newList()
 
 		require.Equal(t, 0, l.Len())
 		require.Nil(t, l.Front())
@@ -16,7 +16,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("complex", func(t *testing.T) {
-		l := NewList()
+		l := newList()
 
 		l.PushFront(10) // [10]
 		l.PushBack(20)  // [10, 20]
@@ -47,5 +47,26 @@ func TestList(t *testing.T) {
 			elems = append(elems, i.Value.(int))
 		}
 		require.Equal(t, []int{70, 80, 60, 40, 10, 30, 50}, elems)
+	})
+
+	t.Run("my own test", func(t *testing.T) {
+		l := newList()
+
+		l.PushFront(1)
+		l.PushBack(2)
+		l.PushBack(3)
+		// check Next links
+		require.Equal(t, 1, l.Front().Value)
+		require.Equal(t, 2, l.Front().Next.Value)
+		require.Equal(t, 3, l.Front().Next.Next.Value)
+		// check Prev links
+		require.Equal(t, 3, l.Back().Value)
+		require.Equal(t, 2, l.Back().Prev.Value)
+		require.Equal(t, 1, l.Back().Prev.Prev.Value)
+		// check MoveToFront
+		l.MoveToFront(l.first.Next)
+		require.Equal(t, 2, l.first.Value)
+		require.Nil(t, l.Front().Prev)
+		require.Nil(t, l.Back().Next)
 	})
 }

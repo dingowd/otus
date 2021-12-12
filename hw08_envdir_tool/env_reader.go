@@ -29,7 +29,6 @@ func ParseValue(fileName string) (string, error) {
 	toProcess := fScanner.Bytes()
 	toProcess = bytes.ReplaceAll(toProcess, zero, []byte("\n"))
 	strToReturn := string(toProcess)
-	// strToReturn = strings.Split(strToReturn, "\n")[0] // to cut after /n
 	strToReturn = strings.TrimRight(strToReturn, "\t ")
 	return strToReturn, nil
 }

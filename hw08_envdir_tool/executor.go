@@ -22,10 +22,10 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 		}
 	}
 	ext.Env = os.Environ()
-	err := ext.Run()
-	returnCode = 0
-	if err != nil {
+	if err := ext.Run(); err != nil {
 		returnCode = 1
+	} else {
+		returnCode = 0
 	}
 	return
 }

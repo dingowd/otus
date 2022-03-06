@@ -79,7 +79,6 @@ func TestValidate(t *testing.T) {
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
 			tt := tt
-			t.Parallel()
 			require.Equal(t, tt.expectedErr, Validate(tt.in))
 			_ = tt
 		})

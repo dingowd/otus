@@ -73,7 +73,7 @@ func TestTelnetClient_Connect(t *testing.T) {
 		defer func() { require.NoError(t, file.Close()) }()
 		require.NoError(t, err)
 		require.NotNil(t, file)
-		check := "Hello from NC"
+		check := "Hello from NC\n"
 		l, err := net.Listen("tcp", "127.0.0.1:4242")
 		require.NoError(t, err)
 		defer func() { require.NoError(t, l.Close()) }()
@@ -83,7 +83,6 @@ func TestTelnetClient_Connect(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			in := &bytes.Buffer{}
-			// out := &bytes.Buffer{}
 
 			timeout, err := time.ParseDuration("10s")
 			require.NoError(t, err)
@@ -94,7 +93,7 @@ func TestTelnetClient_Connect(t *testing.T) {
 			scanner := bufio.NewScanner(file)
 			scanner.Scan()
 			str := scanner.Text()
-			// str = str + "\n"
+			str = str + "\n"
 
 			err = client.Receive()
 			require.NoError(t, err)

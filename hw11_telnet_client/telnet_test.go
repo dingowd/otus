@@ -1,11 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"io/ioutil"
 	"net"
-	"os"
 	"sync"
 	"testing"
 	"time"
@@ -68,11 +66,6 @@ func TestTelnetClient(t *testing.T) {
 
 func TestTelnetClient_Connect(t *testing.T) {
 	t.Run("from nc", func(t *testing.T) {
-		file, err := os.OpenFile("out.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0o666)
-		defer os.Remove("out.txt")
-		defer func() { require.NoError(t, file.Close()) }()
-		require.NoError(t, err)
-		require.NotNil(t, file)
 		check := "Hello from NC\n"
 		l, err := net.Listen("tcp", "127.0.0.1:4242")
 		require.NoError(t, err)
@@ -83,19 +76,18 @@ func TestTelnetClient_Connect(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			in := &bytes.Buffer{}
+			out := &bytes.Buffer{}
 
 			timeout, err := time.ParseDuration("10s")
 			require.NoError(t, err)
 
-			client := NewTelnetClient(l.Addr().String(), timeout, ioutil.NopCloser(in), file)
+			client := NewTelnetClient(l.Addr().String(), timeout, ioutil.NopCloser(in), out)
 			require.NoError(t, client.Connect())
 			defer func() { require.NoError(t, client.Close()) }()
-			scanner := bufio.NewScanner(file)
-			scanner.Scan()
-			str := scanner.Text()
-			str = str + "\n"
 
 			err = client.Receive()
+			str := out.String()
+
 			require.NoError(t, err)
 			require.Equal(t, check, str)
 		}()

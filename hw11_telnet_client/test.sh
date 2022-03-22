@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#another test
 set -xeuo pipefail
 
 go build -o go-telnet

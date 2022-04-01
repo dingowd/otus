@@ -23,7 +23,7 @@ func main() {
 	if err := client.Connect(); err != nil {
 		log.Fatalf("unable to connect within %s", *timeout)
 	}
-	fmt.Fprintf(os.Stderr, "...Connected to %s\n", addr)
+	//fmt.Fprintf(os.Stderr, "...Connected to %s\n", addr)
 	defer client.Close()
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
@@ -31,19 +31,15 @@ func main() {
 
 	go func() {
 		err := client.Receive()
-		if err == nil {
-			fmt.Fprintln(os.Stderr, "...Connection was closed by peer")
-		} else {
-			fmt.Println("receive error: ", err)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "receive error: ", err)
 		}
 		cancel()
 	}()
 	go func() {
 		err := client.Send()
-		if err == nil {
-			fmt.Fprintln(os.Stderr, "...EOF")
-		} else {
-			fmt.Println("send error: ", err)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "send error: ", err)
 		}
 		cancel()
 	}()

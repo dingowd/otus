@@ -23,7 +23,6 @@ func main() {
 	if err := client.Connect(); err != nil {
 		log.Fatalf("unable to connect within %s", *timeout)
 	}
-	//fmt.Fprintf(os.Stderr, "...Connected to %s\n", addr)
 	defer client.Close()
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)

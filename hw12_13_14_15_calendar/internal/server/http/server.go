@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/dingowd/hw12_13_14_15_calendar/internal/storage"
+	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
 	"github.com/sirupsen/logrus"
 )
 

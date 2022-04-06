@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dingowd/hw12_13_14_15_calendar/internal/storage"
+	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
 	"gopkg.in/metakeule/fmtdate.v1"
 )
 
@@ -29,7 +29,10 @@ func (s *Storage) Close() error {
 }
 
 func (s *Storage) IsEventExist(e storage.Event) (bool, error) {
-	rows, _ := s.DB.Query("select * from events where Start_date = $1 and End_date = $2", e.StartDate, e.EndDate)
+	rows, err := s.DB.Query("select * from events where Start_date = $1 and End_date = $2", e.StartDate, e.EndDate)
+	if err != nil {
+		return false, err
+	}
 	if rows.Err() != nil {
 		return false, rows.Err()
 	}
@@ -49,8 +52,8 @@ func (s *Storage) IsEventExist(e storage.Event) (bool, error) {
 }
 
 func (s *Storage) Create(e storage.Event) error {
-	ok, _ := s.IsEventExist(e)
-	if ok {
+	exist, _ := s.IsEventExist(e)
+	if exist {
 		return storage.ErrorDateBusy
 	}
 	_, err := s.DB.Exec("insert into events(owner, title, descr, StartDate, StartTime, EndDate, EndTime)"+
@@ -72,7 +75,10 @@ func (s *Storage) Delete(id int) error {
 }
 
 func (s *Storage) GetIntervalEvent(day string, n int) ([]storage.Event, error) {
-	date, _ := fmtdate.Parse(fmtdate.DefaultDateFormat, day)
+	date, err := fmtdate.Parse(fmtdate.DefaultDateFormat, day)
+	if err != nil {
+		return nil, storage.DateFormatError
+	}
 	timeOut := date.Add(time.Duration(n) * time.Hour)
 	day2 := fmtdate.Format(fmtdate.DefaultDateFormat, timeOut)
 	events := []storage.Event{}

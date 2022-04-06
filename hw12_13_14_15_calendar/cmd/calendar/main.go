@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
-	"github.com/dingowd/hw12_13_14_15_calendar/internal/app"
-	"github.com/dingowd/hw12_13_14_15_calendar/internal/logger"
-	internalhttp "github.com/dingowd/hw12_13_14_15_calendar/internal/server/http"
-	memorystorage "github.com/dingowd/hw12_13_14_15_calendar/internal/storage/memory"
-	sqlstorage "github.com/dingowd/hw12_13_14_15_calendar/internal/storage/sql"
+	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/app"
+	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/logger"
+	internalhttp "github.com/dingowd/otus/hw12_13_14_15_calendar/internal/server/http"
+	memorystorage "github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage/memory"
+	sqlstorage "github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage/sql"
 	"github.com/sirupsen/logrus"
 )
 
@@ -56,8 +56,9 @@ func main() {
 		storage = memorystorage.New()
 	case "sql":
 		storage = sqlstorage.New()
-		if err := storage.Connect(context.TODO(), config.DSN); err != nil {
+		if err := storage.Connect(context.Background(), config.DSN); err != nil {
 			logg.Error("failed to connect database" + err.Error())
+			file.Close()
 			os.Exit(1)
 		}
 	default:
@@ -91,6 +92,6 @@ func main() {
 	if err := server.Start(ctx); err != nil {
 		logg.Error("failed to start http server: " + err.Error())
 		cancel()
-		os.Exit(1)
+		os.Exit(1) //nolint:gocritic
 	}
 }

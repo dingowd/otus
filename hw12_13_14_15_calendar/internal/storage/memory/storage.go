@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dingowd/hw12_13_14_15_calendar/internal/storage"
+	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
 	"gopkg.in/metakeule/fmtdate.v1"
 )
 
@@ -39,10 +39,10 @@ func (s *Storage) IsEventExist(e storage.Event) (bool, error) {
 }
 
 func (s *Storage) Create(e storage.Event) error {
+	s.mu.Lock()
 	if ok, _ := s.IsEventExist(e); ok {
 		return storage.ErrorDateBusy
 	}
-	s.mu.Lock()
 	s.Events[s.id] = e
 	s.id++
 	s.mu.Unlock()
@@ -73,7 +73,7 @@ func (s *Storage) GetIntervalEvent(day string, n int) ([]storage.Event, error) {
 	out := make([]storage.Event, 0)
 	d1, err := fmtdate.Parse(fmtdate.DefaultDateFormat, day)
 	if err != nil {
-		return out, storage.DateFormatError
+		return nil, storage.DateFormatError
 	}
 	d2 := d1.Add(time.Duration(n) * time.Hour)
 	for _, v := range s.Events {

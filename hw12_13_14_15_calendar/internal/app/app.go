@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/dingowd/hw12_13_14_15_calendar/internal/storage"
+	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
 	"github.com/sirupsen/logrus"
 )
 
@@ -37,10 +37,10 @@ type Storage interface {
 }
 
 func New(logger Logger, storage Storage) *App {
-	a := new(App)
-	a.Logg = logger
-	a.Storage = storage
-	return a
+	return &App{
+		Logg:    logger,
+		Storage: storage,
+	}
 }
 
 func (a *App) CreateEvent(ctx context.Context, e storage.Event) error {

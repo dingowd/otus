@@ -58,8 +58,7 @@ func main() {
 		storage = sqlstorage.New()
 		if err := storage.Connect(context.Background(), config.DSN); err != nil {
 			logg.Error("failed to connect database" + err.Error())
-			file.Close()
-			os.Exit(1)
+			os.Exit(1) // nolint:gocritic
 		}
 	default:
 		storage = memorystorage.New()
@@ -92,6 +91,6 @@ func main() {
 	if err := server.Start(ctx); err != nil {
 		logg.Error("failed to start http server: " + err.Error())
 		cancel()
-		os.Exit(1) //nolint:gocritic
+		os.Exit(1)
 	}
 }

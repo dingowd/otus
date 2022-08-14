@@ -2,16 +2,19 @@ package sqlstorage
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"time"
 
 	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
 	"gopkg.in/metakeule/fmtdate.v1"
+
+	"github.com/jmoiron/sqlx"
+
+	_ "github.com/jackc/pgx/stdlib"
 )
 
 type Storage struct {
-	DB *sql.DB
+	DB *sqlx.DB
 }
 
 func New() *Storage {
@@ -20,7 +23,7 @@ func New() *Storage {
 
 func (s *Storage) Connect(ctx context.Context, dsn string) error {
 	var err error
-	s.DB, err = sql.Open("postgres", dsn)
+	s.DB, err = sqlx.Open("pgx", dsn)
 	return err
 }
 

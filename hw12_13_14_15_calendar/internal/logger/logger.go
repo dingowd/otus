@@ -15,18 +15,18 @@ func New(l string) *Logger {
 	return &Logger{Level: l, Log: logrus.New()}
 }
 
-func (l *Logger) SetLevel() logrus.Level {
+func (l *Logger) SetLevel() {
 	switch l.Level {
 	case "INFO":
-		return logrus.InfoLevel
+		l.Log.Level = logrus.InfoLevel
 	case "ERROR":
-		return logrus.ErrorLevel
+		l.Log.Level = logrus.ErrorLevel
 	case "DEBUG":
-		return logrus.DebugLevel
+		l.Log.Level = logrus.DebugLevel
 	case "WARN":
-		return logrus.WarnLevel
+		l.Log.Level = logrus.WarnLevel
 	default:
-		return logrus.InfoLevel
+		l.Log.Level = logrus.InfoLevel
 	}
 }
 

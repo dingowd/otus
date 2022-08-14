@@ -2,10 +2,7 @@ package app
 
 import (
 	"context"
-	"io"
-
 	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
-	"github.com/sirupsen/logrus"
 )
 
 type App struct {
@@ -15,8 +12,6 @@ type App struct {
 }
 
 type Logger interface {
-	SetLevel() logrus.Level
-	SetOutput(output io.Writer)
 	Info(msg string)
 	Error(msg string)
 	Debug(msg string)

@@ -5,12 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/dingowd/otus/hw12_13_14_15_calendar/internal/storage"
-	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -21,8 +19,6 @@ type Server struct {
 }
 
 type Logger interface {
-	SetLevel() logrus.Level
-	SetOutput(output io.Writer)
 	Info(msg string)
 	Error(msg string)
 	Debug(msg string)
